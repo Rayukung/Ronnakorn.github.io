@@ -1,0 +1,34 @@
+name: Fastwork job alert
+
+on:
+  schedule:
+    - cron: "*/30 * * * *" # ทุก 30 นาที (เวลาจริงอาจช้ากว่านี้เล็กน้อย)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fastwork-job-alert
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check jobs and send email
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python job-alert/fastwork_alert.py
+      - name: Save seen jobs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add job-alert/seen_jobs.json
+          git diff --cached --quiet || (git commit -m "Update seen Fastwork jobs [skip ci]" && git push)

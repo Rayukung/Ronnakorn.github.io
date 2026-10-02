@@ -1,0 +1,9 @@
+{
+  "_comment": "แก้เงื่อนไขที่นี่ - คำค้นไม่สนตัวพิมพ์เล็ก/ใหญ่ ค้นจากชื่องาน รายละเอียด และหมวดหมู่",
+  "keywords_any": ["python", "เว็บ", "website", "scrape", "automation", "bot"],
+  "keywords_all": [],
+  "keywords_exclude": ["ด่วนมาก ราคาถูก"],
+  "min_budget": 0,
+  "lookback_hours": 24,
+  "max_pages": 5
+}
